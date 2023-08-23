@@ -1,0 +1,9 @@
+trigger NoContactTrigger on Contact (after insert, after update, after delete, after undelete) {
+    if (Trigger.isAfter) {
+        if (Trigger.isInsert || Trigger.isUpdate) {
+            contactUpdateOnAccount.updateAccountContacts(Trigger.new);
+        } else if (Trigger.isDelete || Trigger.isUndelete) {
+            contactUpdateOnAccount.updateAccountContacts(Trigger.old);
+        }
+    }
+}
