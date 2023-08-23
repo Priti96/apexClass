@@ -1,0 +1,25 @@
+public class contactUpdateOnAccount {
+public static void updateAccountContacts(List<Contact> contacts) {
+        Set<Id> accountIds = new Set<Id>();
+
+        for (Contact con : contacts) {
+            if (con.AccountId != null) {
+                accountIds.add(con.AccountId);
+            }
+        }
+
+        List<Account> accountsToUpdate = new List<Account>();
+
+        for (AggregateResult result : [SELECT AccountId, COUNT(Id) cnt FROM Contact WHERE AccountId IN :accountIds GROUP BY AccountId]) {
+            Id accountId = (Id)result.get('AccountId');
+            Integer contactCount = (Integer)result.get('cnt');
+
+            Account acc = new Account(Id = accountId, NumberOfCon__c = contactCount);
+            system.debug('@@@acc'+acc);
+            accountsToUpdate.add(acc);
+        }
+
+        update accountsToUpdate;
+    system.debug('@@@accountsToUpdate'+accountsToUpdate);
+    }
+}
