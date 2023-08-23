@@ -1,0 +1,16 @@
+public class httpCalloutSample {
+public static void makeHttpCallout() {
+
+        String endpoint = 'https://postman-echo.com/get?foo1=bar1&foo2=bar2';
+
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint(endpoint);
+        request.setMethod('GET');
+        
+        Http http = new Http();
+        HttpResponse response = http.send(request);
+
+        System.debug('HTTP Response Status: ' + response.getStatus());
+        System.debug('HTTP Response Body: ' + response.getBody());
+    }
+}
